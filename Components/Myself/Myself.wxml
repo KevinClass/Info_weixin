@@ -1,0 +1,4 @@
+<!--Components/Myself/Myself.wxml-->
+<view hidden="{{hidden}}">
+  <text>Components/Myself/Myself.wxml</text>
+</view>

@@ -1,0 +1,35 @@
+/**index.wxss**/
+page {
+  --tabbar-height: 65px;
+}
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+.order {
+  background-color: #F8F8F8;
+  /* border: solid 3px red; */
+  height: 100%;
+}
+
+.page__hd {
+  height: calc(100vh - var(--tabbar-height));
+  /* border: solid 4px blue; */
+}

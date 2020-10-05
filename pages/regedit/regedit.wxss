@@ -1,0 +1,12 @@
+/* pages/regedit/regedit.wxss */
+
+mp-cell
+{
+  text-align: right;
+}
+
+input
+{
+  text-align: left;
+  margin-left: 13rpx;
+}

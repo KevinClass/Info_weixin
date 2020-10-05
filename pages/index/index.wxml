@@ -1,0 +1,23 @@
+<!--index.wxml-->
+<view wx:if="{{!hasUserInfo && canIUse}}">
+  <button open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+  <text>
+    登陆系统，需获取微信权限，请点击获取头像。如果是第一次使用系统，需进行系统注册。
+  </text>
+</view>
+<view wx:if="{{hasUserInfo}}">
+  <view class="page__hd">
+    <view hidden="{{!(index == 0)}}" class="order">
+      <Order teamid="{{teamId}}"></Order>
+    </view>
+    <!-- <Myself hidden="{{!(index == 1)}}"></Myself> -->
+    <view hidden="{{!(index == 1)}}">
+      <view class="userinfo">
+        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      </view>
+      <text>我的装修队：{{teamName}}</text>
+    </view>
+  </view>
+  <mp-tabbar style="position:fixed;bottom:0;width:100%;left:0;right:0;" list="{{list}}" current="{{index}}" bindchange="tabChange"></mp-tabbar>
+</view>
