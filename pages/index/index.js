@@ -30,7 +30,11 @@ Page({
       }
     ]
   },
-  
+  onClockKey(e) {
+    wx.navigateTo({
+      url: '../../pages/clock/clock'
+    })
+  },
   onShow: function() {
    
   },

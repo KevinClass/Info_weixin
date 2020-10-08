@@ -1,0 +1,51 @@
+/* pages/takeClock/takeClock.wxss */
+mp-cell
+{
+  text-align: right;
+  height: 60px;
+}
+.mp-cell {
+  height: 10px;
+}
+
+.weui-label {
+  width: 70px;
+}
+
+.clockBtn {
+  border-radius:30px;
+  background-color: #4278BE;
+  margin: 2px;
+  height: 30px;
+  width: 60px;
+  font-size: 12px;
+  top: 0;
+  right: 0;
+  position: absolute;
+  text-align:center;
+  line-height: 2.3;
+}
+
+input
+{
+  text-align: left;
+  margin-left: 13rpx;
+}
+.weui-vcode-btn {
+  font-size: 12px;
+  height: 40px;
+  line-height: 3em;
+}
+mp-cell {
+  font-size: 13px;
+}
+
+.ordertext {
+  background-color: #000000;
+  width: 108px;
+}
+
+.image {
+  height:100px;
+  width:100px;
+}

@@ -4,7 +4,9 @@
     <view class="v-input">
       <input class="wx-input" auto-focus bindchange="onInputChange" placeholder="搜索我的订单号"/>
     </view>
-    <button class="input-btn" size="mini" type="primary" bindtap="onRefresh">搜索</button>
+    <button class="input-btn" size="mini" bindtap="onRefresh">
+      <image class='btnImg' src='../../images/search.png'></image>
+    </button>
   </view>
   <view class="order-page" >
     <scroll-view scroll-y="true" enable-back-to-top="true" refresher-enabled="true" class="scroll-view"

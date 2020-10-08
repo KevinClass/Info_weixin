@@ -2,25 +2,70 @@
 page {
   --tabbar-height: 65px;
 }
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 .userinfo-avatar {
   width: 128rpx;
   height: 128rpx;
   margin: 20rpx;
   border-radius: 50%;
+  position:fixed;
+  right: 0;
+  top: 0;
+}
+
+.content-container {
+  margin-top: 20px;
+  margin: 8px;
+  padding: 10px;
+  height: 90px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+
+.op-container {
+  margin-top: 20px;
+  margin: 8px;
+  padding: 10px;
+  height: 90px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.team-name {
+  color: #aaa;
 }
 
 .userinfo-nickname {
-  color: #aaa;
+  margin-left: 20px;
+  position: fixed;
+  top: 80px;
+  left: 0px;
 }
 
 .usermotto {
   margin-top: 200px;
+}
+.tabbar {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  left:0;right:0;
+}
+
+.weui-tabbar__item {
+  background: #FBFBFB !important;
+}
+
+.weui-tabbar__icon {
+  background: #FBFBFB !important;
+}
+
+.tabbar--weui-tabbar__label  {
+  background: #FBFBFB !important;
+}
+.tabbar--weui-tabbar__item.tabbar--weui-bar__item_on .tabbar--weui-tabbar__label {
+  background: #FBFBFB !important;
 }
 
 .order {
@@ -29,7 +74,24 @@ page {
   height: 100%;
 }
 
+.cell {
+  height: 10px;
+  background: #FBFBFB;
+}
+
+.weui-cell__bd {
+  background: #FBFBFB !important;
+}
+
+.weui-cell__hd {
+  background: #FBFBFB !important;
+}
+
 .page__hd {
   height: calc(100vh - var(--tabbar-height));
   /* border: solid 4px blue; */
+}
+
+view {
+  background: #F0F4F7;
 }

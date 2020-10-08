@@ -1,15 +1,19 @@
 {
   "pages":[
-    "pages/OrderDetail/OrderDetail",
     "pages/index/index",
+    "pages/OrderDetail/OrderDetail",
+    "pages/Detail/Detail",
+    "pages/takeClock/takeClock",
     "pages/regedit/regedit",
+    "pages/clock/clock",
     "pages/logs/logs"
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "人员管理系统",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle":"black",
+    "backgroundColor": "#4278BE",
+    "navigationBarBackgroundColor": "#4278BE"
   },
   "useExtendedLib":{
     "kbone": true,

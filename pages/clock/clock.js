@@ -1,20 +1,18 @@
-// pages/OrderDetail/OrderDetail.js
+// pages/clock/clock.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    orderId: undefined,
-    teamId: undefined
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log('options:', options)
-    this.setData({orderId: options.id, teamId: options.teamid})
+
   },
 
   /**

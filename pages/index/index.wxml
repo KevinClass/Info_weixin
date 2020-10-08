@@ -12,12 +12,17 @@
     </view>
     <!-- <Myself hidden="{{!(index == 1)}}"></Myself> -->
     <view hidden="{{!(index == 1)}}">
-      <view class="userinfo">
+      <view class="content-container">
         <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+        <text class="team-name">{{teamName}}</text>
         <text class="userinfo-nickname">{{userInfo.nickName}}</text>
       </view>
-      <text>我的装修队：{{teamName}}</text>
+      <mp-cells>
+        <mp-cell ext-class="cell" link hover value="打卡记录" bindtap="onClockKey">
+          <image slot="title" src="../../images/takeClock.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+        </mp-cell>
+      </mp-cells>
     </view>
   </view>
-  <mp-tabbar style="position:fixed;bottom:0;width:100%;left:0;right:0;" list="{{list}}" current="{{index}}" bindchange="tabChange"></mp-tabbar>
+  <mp-tabbar ext-class="tabbar" list="{{list}}" current="{{index}}" bindchange="tabChange"></mp-tabbar>
 </view>
