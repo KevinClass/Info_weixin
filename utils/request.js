@@ -1,6 +1,26 @@
-const apiHttp = "http://192.168.18.12";
+// const apiHttp = "https://192.168.0.143:80";
+const apiHttp = "https://www.info168.top";
 const socketHttp = "wss://*****.com/wss";
 
+function login()
+{
+	wx.login({
+		success: res => {
+			// 发送 res.code 到后台换取 openId, sessionKey, unionId
+			console.log('jscode:' + res.code)
+			fun('/jwt/tokenWeiXin?code=' + res.code, "GET")
+				.then(res => {
+					console.log('result:' + JSON.stringify(res.data))
+					if(res.data.status == 200) {
+						wx.setStorageSync('token', res.data.data)
+						console.log('token:' + wx.getStorageSync('token'))
+					}
+				}).catch(err => {
+					console.log('error',err)
+				})
+		}
+	})
+}
 function fun(url, method, data, header) {
 	console.log('url:' + url + ', method:' + method)
 	data = data || {};
@@ -15,7 +35,12 @@ function fun(url, method, data, header) {
 			data: data,
 			header: header,
 			method: method,
-			success: function (res) {resolve(res)},
+			success: function (res) {
+				if(res.data.status == 40301) {
+					login()
+				}
+				resolve(res)
+			},
 			fail: reject,
 			fail: function (res) {reject(res)},
 			complete: function () {

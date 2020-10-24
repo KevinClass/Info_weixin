@@ -19,6 +19,7 @@ Page({
     orderName: '',
     imageList: [],
     formData: {},
+    type: 0,
     rules: [{
       name: 'address',
       rules: {
@@ -37,12 +38,27 @@ Page({
     console.log(options)
     this.data.orderId = options.orderId
     this.data.teamId = options.teamId
+    this.setData({type: options.type})
 
     let that = this
     Request.get('/admin/order/' + options.orderId)
     .then(res => {
       console.log('result:' + JSON.stringify(res.data))
       if (res.data.status == 200) {
+        console.log('res.data.data.status',res.data.data.status)
+        if(res.data.data.status === '03')
+        {
+          wx.navigateBack({
+            delta: 0,
+            success: ()=>{
+              wx.showToast({
+                title: '订单已完结',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          })
+        }
         that.setData({orderNo:res.data.data.orderNo, orderName: res.data.data.orderName})
       }
     }).catch(err => {
@@ -85,7 +101,7 @@ Page({
     wx.chooseImage({
       count: 1, // 默认9
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         // _this.setData({
@@ -111,7 +127,6 @@ Page({
   },
   takeClock() {
     let {formData} = this.data
-    console.log('formData', formData)
     if(formData.address == undefined || formData.address.length < 1) {
       this.setData({
         error: '请获取地址'
@@ -124,7 +139,10 @@ Page({
       })
       return
     }
-    formData.picNum = this.data.picNum
+    formData.picNum = this.data.photoNum
+    formData.type = this.data.type
+    formData.orderId = this.data.orderId
+    console.log('formData', formData)
     let _that = this
     Request.post('/admin/clock/add', JSON.stringify(_that.data.formData))
     .then(res => {

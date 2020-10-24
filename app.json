@@ -1,6 +1,10 @@
 {
   "pages":[
     "pages/index/index",
+    "pages/EndOrder/EndOrder",
+    "pages/MyClock/MyClock",
+    "pages/ClockRecordDetail/ClockRecordDetail",
+    "pages/takeClockRecord/takeClockRecord",
     "pages/OrderDetail/OrderDetail",
     "pages/Detail/Detail",
     "pages/takeClock/takeClock",

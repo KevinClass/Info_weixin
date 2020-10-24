@@ -18,9 +18,11 @@
         <text class="userinfo-nickname">{{userInfo.nickName}}</text>
       </view>
       <mp-cells>
-        <mp-cell ext-class="cell" link hover value="打卡记录" bindtap="onClockKey">
-          <image slot="title" src="../../images/takeClock.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
-        </mp-cell>
+        <navigator url="{{'../MyClock/MyClock?id=1'}}">
+          <mp-cell ext-class="cell" link hover value="打卡记录">
+            <image slot="title" src="../../images/takeClock.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+          </mp-cell>
+        </navigator>
       </mp-cells>
     </view>
   </view>

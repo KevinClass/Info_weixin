@@ -30,10 +30,10 @@ Component({
     loading:false
   },
   ready: function() {
-    event.regedit('user', this.notice, this)
+    event.regedit('order', this.notice, this)
    },
    detached() {
-    event.unRegedit('user', this.notice)
+    event.unRegedit('order', this.notice)
    },
 
   /**
@@ -71,14 +71,14 @@ Component({
       console.log('onOrderKey', e)
       console.log('id:' +  e.currentTarget.dataset.index.id)
       wx.navigateTo({
-        url: '../../pages/OrderDetail/OrderDetail?id=' + e.currentTarget.dataset.index.id + '&teamid=' + this.data.teamid
+        url: '../../pages/OrderDetail/OrderDetail?id=' + e.currentTarget.dataset.index.id + '&teamid=' + this.data.teamid + '&status=' + e.currentTarget.dataset.index.status
       })
     },
     onSerach() {
       if(!this.data.orderEnd && !this.data.loading)
       {
         this.data.loading = true
-        Request.get('/admin/order/search?page.pn=' + this.data.pagePn + '&page.size=' + this.data.pageSize + '&search.orderNo_prefixLike='+this.data.orderNo+'&search.teamId='+this.data.teamid+'&sort.crtTime=desc')
+        Request.get('/admin/order/search?page.pn=' + this.data.pagePn + '&page.size=' + this.data.pageSize + '&search.orderNo_prefixLike='+this.data.orderNo+'&search.teamId_eq='+this.data.teamid+'&sort.crtTime=desc')
         .then(res => {
           console.log('result:' + JSON.stringify(res.data))
           if (res.data.status == 200) {

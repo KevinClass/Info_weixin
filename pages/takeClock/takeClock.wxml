@@ -2,7 +2,7 @@
 <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
   <view class="page__bd">
     <mp-form id="form" rules="{{rules}}" models="{{formData}}">
-      <mp-cells title="打卡信息">
+      <mp-cells title="{{type == 1 ? '上班打卡':'下班打卡' + '信息'}}">
         <mp-cell ext-class="mp-cell" title="订单ID：">
           <input type="text" disabled="true" value="{{orderNo}}" class="weui-input"/>
         </mp-cell>
@@ -14,8 +14,8 @@
           <input type="number" maxlength="2" bindchange="formInputChange" data-field="person" class="weui-input" placeholder="请输入人数" />
         </mp-cell>
         <mp-cell ext-class="mp-cell" prop="picNum" title="图片数：">
-          <input type="text" bindchange="formInputChange" data-field="picNum" disabled="true" value="{{picNum}}" class="weui-input" placeholder="" />
-          <view slot="footer" class="weui-vcode-btn" bindtap="takePhoto">拍照</view>
+          <input type="text" bindchange="formInputChange" data-field="picNum" disabled="true" value="{{photoNum}}" class="weui-input" placeholder="" />
+          <view slot="footer" class="weui-vcode-btn" bindtap="takePhoto">选择</view>
         </mp-cell>
         <div>
           <image wx:key="item" wx:for="{{imageList}}" data-index='{{item}}' src="{{item}}" mode="aspecFill" class="image"/>

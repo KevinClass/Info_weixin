@@ -1,5 +1,6 @@
 import Request from "../../utils/request"; //导入模块
 import util from "../../utils/util"
+import event from "../../utils/event"
 
 Page({
   data: {
@@ -115,11 +116,14 @@ Page({
                       title: res.data.message,
                       icon: 'none'
                     })
-                    wx.reLaunch({url: '../index/index'})
+                    wx.navigateBack()
                 }else if(res.data.status == 200) {
                   wx.setStorageSync('token', res.data.data)
-                  util.getUserTeamInfo();
-                  wx.reLaunch({url: '../index/index'})
+                  wx.navigateBack().then(res=>{
+                    console.log('regedit notice start')
+                    event.notice('user', res.data)
+                    console.log('regedit notice end')
+                  })
                 }
 
               }).catch(err => {

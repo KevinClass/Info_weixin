@@ -6,7 +6,8 @@ Page({
    */
   data: {
     orderId: undefined,
-    teamId: undefined
+    teamId: undefined,
+    status: undefined
   },
 
   /**
@@ -14,7 +15,7 @@ Page({
    */
   onLoad: function (options) {
     console.log('options:', options)
-    this.setData({orderId: options.id, teamId: options.teamid})
+    this.setData({orderId: options.id, teamId: options.teamid, status: options.status})
   },
 
   /**

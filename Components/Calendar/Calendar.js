@@ -190,6 +190,7 @@ Component({
       this.setData({
         days
       })
+      this.triggerEvent('handleSearch', { year: this.data.cur_year, month: this.data.cur_month, day: days[e.currentTarget.dataset.index].date})
     }
   }
 })

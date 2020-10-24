@@ -17,19 +17,22 @@ const formatNumber = n => {
 }
 
 const getUserTeamInfo = () => {
-  Request.get('/admin/user/front/weixinInfo?token=' + wx.getStorageSync('token'))
-  .then(res => {
-    console.log('result:' + JSON.stringify(res))
-    if (res.statusCode == 200) 
-    {
-      wx.setStorage({
-        data: res.data,
-        key: 'user',
-      })
-      event.notice('user', res.data)
-    }
-  }).catch(err => {
-    console.log('error:' + JSON.stringify(err.data), err)
+  return new Promise((resolve, reject) => {
+    Request.get('/admin/user/front/weixinInfo?token=' + wx.getStorageSync('token'))
+    .then(res => {
+      console.log('result:' + JSON.stringify(res))
+      if (res.statusCode == 200) 
+      {
+        wx.setStorageSync({
+          data: res.data,
+          key: 'user',
+        })
+      }
+      resolve(res)
+    }).catch(err => {
+      console.log('error:' + JSON.stringify(err.data), err)
+      reject(err)
+    })
   })
 }
 
