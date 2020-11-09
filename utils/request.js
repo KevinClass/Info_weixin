@@ -1,4 +1,4 @@
-// const apiHttp = "https://192.168.0.143:80";
+// const apiHttp = "http://192.168.0.143:80";
 const apiHttp = "https://www.info168.top";
 const socketHttp = "wss://*****.com/wss";
 
@@ -117,6 +117,9 @@ export default {
 	},
 	"post": function (url, data, header) {
 		return fun(url, "POST", data, header);
+	},
+	"put": function (url, data, header) {
+		return fun(url, "PUT", data, header);
 	},
 	upload: function(url, name, filePath) {
 		return upload(url, name, filePath);

@@ -10,7 +10,7 @@
                 </view>
             </navigator>
         </view>
-        <view class="weui-grid" >
+        <view class="weui-grid" wx:if="{{teamId > 1}}" >
             <navigator url="{{'../takeClock/takeClock?orderId=' + orderId + '&teamId=' + teamId + '&type=1&status=' + status}}">
                 <view class='weui-grid__bg'>
                     <view class="weui-grid__icon">
@@ -20,7 +20,7 @@
                 </view>
             </navigator>
         </view>
-        <view class="weui-grid" >
+        <view class="weui-grid" wx:if="{{teamId > 1}}" >
             <navigator url="{{'../takeClock/takeClock?orderId=' + orderId + '&teamId=' + teamId + '&type=2&status=' + status}}">
                 <view class='weui-grid__bg'>
                     <view class="weui-grid__icon">
@@ -30,6 +30,16 @@
                 </view>
             </navigator>
         </view>
+        <!-- <view class="weui-grid" >
+            <navigator url="{{'../EndOrder/EndOrder?orderId=' + orderId + '&teamId=' + teamId + '&type=3&status=' + status}}">
+                <view class='weui-grid__bg'>
+                    <view class="weui-grid__icon">
+                        <image src="../../images/endOrder.png" mode="scaleToFill" />
+                    </view>
+                    <text class="weui-grid__label">完结工单打卡</text>
+                </view>
+            </navigator>
+        </view> -->
         <view class="weui-grid" >
             <navigator url="{{'../takeClockRecord/takeClockRecord?orderId=' + orderId }}">
                 <view class='weui-grid__bg'>
@@ -37,16 +47,6 @@
                         <image src="../../images/record.png" mode="scaleToFill" />
                     </view>
                     <text class="weui-grid__label">打卡记录</text>
-                </view>
-            </navigator>
-        </view>
-        <view class="weui-grid" >
-            <navigator url="{{'../EndOrder/EndOrder?orderId=' + orderId + '&teamId=' + teamId + '&type=3&status=' + status}}">
-                <view class='weui-grid__bg'>
-                    <view class="weui-grid__icon">
-                        <image src="../../images/endOrder.png" mode="scaleToFill" />
-                    </view>
-                    <text class="weui-grid__label">完结工单</text>
                 </view>
             </navigator>
         </view>

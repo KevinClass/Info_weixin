@@ -1,6 +1,7 @@
 // Components/Order/Order.js
 import Request from "../../utils/request" //导入模块
 import event from "../../utils/event"
+const app = getApp()
 Component({
   /**
    * 组件的属性列表
@@ -27,7 +28,8 @@ Component({
     orderTotal: 0,
     orderList: [],
     orderEnd: false,
-    loading:false
+    loading:false,
+    teamIds: ''
   },
   ready: function() {
     event.regedit('order', this.notice, this)
@@ -41,6 +43,24 @@ Component({
    */
   methods: {
     notice (res, that) {
+      console.log('global', app.globalData.sysUser)
+      if(app.globalData.sysUser.teamId == 1) {
+        Request.get('/admin/userTeam/teams')
+        .then(res => {
+          console.log('teams', res.data.data.rows)
+          let teams = res.data.data.rows
+          teams.forEach((item, index) => {
+            if(index != 0) {
+              that.data.teamIds += ','
+            }
+            that.data.teamIds += item.id
+          })
+          console.log(that.data.teamIds)
+        })
+      }else {
+        that.data.teamIds = that.data.teamid
+        console.log('teamIds, init', that.data.teamIds)
+      }
       that.onRefresh()
     },
     onRefresh() {
@@ -77,8 +97,9 @@ Component({
     onSerach() {
       if(!this.data.orderEnd && !this.data.loading)
       {
+        console.log('teamIds, init', this.data.teamIds)
         this.data.loading = true
-        Request.get('/admin/order/search?page.pn=' + this.data.pagePn + '&page.size=' + this.data.pageSize + '&search.orderNo_prefixLike='+this.data.orderNo+'&search.teamId_eq='+this.data.teamid+'&sort.crtTime=desc')
+        Request.get('/admin/order/search?page.pn=' + this.data.pagePn + '&page.size=' + this.data.pageSize + '&search.orderNo_prefixLike='+this.data.orderNo+'&search.teamId_in='+this.data.teamIds+'&sort.crtTime=desc')
         .then(res => {
           console.log('result:' + JSON.stringify(res.data))
           if (res.data.status == 200) {

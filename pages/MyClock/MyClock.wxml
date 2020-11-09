@@ -1,0 +1,19 @@
+<wxs module="m1">
+var substring = function(str, start, end) {
+  var result = undefined;
+  result = str.substring(start, end)
+  return result;
+}
+module.exports.substring = substring;
+</wxs>
+
+<view>
+  <Calendar bind:handleSearch="handleSearch"></Calendar>
+  <mp-cells ext-class="my-cells" title="个人打卡记录">
+    <navigator  wx:key="id" wx:for="{{clockList}}" data-index="{{item}}" url="{{'../ClockRecordDetail/ClockRecordDetail?id=' + item.id}}">
+      <mp-cell ext-class="cell" link hover value="{{m1.substring(item.crtTime, 11, 19) + (item.type == 1 ? '上班卡' : '下班卡')}}" bindtap="onClockKey">
+        <image slot="title" src="../../images/takeClock.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+      </mp-cell>
+    </navigator>
+  </mp-cells>
+</view>

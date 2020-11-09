@@ -1,0 +1,9 @@
+<view>
+  <mp-cells ext-class="my-cells" title="订单打卡记录">
+    <navigator  wx:key="id" wx:for="{{clockList}}" data-index="{{item}}" url="{{'../ClockRecordDetail/ClockRecordDetail?id=' + item.id}}">
+      <mp-cell ext-class="cell" link hover value="{{item.crtTime + (item.type == 1 ? '上班卡' : item.type == 2 ? '下班卡' : item.type == 3 ? '完结打卡':'') + item.person + '人'}}" bindtap="onClockKey">
+        <image slot="title" src="../../images/takeClock.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+      </mp-cell>
+    </navigator>
+  </mp-cells>
+</view>

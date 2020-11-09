@@ -58,6 +58,7 @@ Page({
   notice (res, that) {
     console.log('notice', res, that)
     util.getUserTeamInfo().then(res=>{
+        app.globalData.sysUser = res.data
         that.setData({
           ['userInfo.nickName']: res.data.name,
           teamName: res.data.teamName,
@@ -166,6 +167,7 @@ Page({
               wx.setStorageSync('token', res.data.data)
               console.log('token:' + wx.getStorageSync('token'))
               util.getUserTeamInfo().then(res=>{
+                app.globalData.sysUser = res.data
                 that.setData({
                   ['userInfo.nickName']: res.data.name,
                   teamName: res.data.teamName,

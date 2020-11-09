@@ -1,0 +1,4 @@
+/* pages/takeClockRecord/takeClockRecord.wxss */
+.cell {
+  font-size: 15px;
+}

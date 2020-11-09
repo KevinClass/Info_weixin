@@ -49,17 +49,3 @@ mp-cell {
   height:100px;
   width:100px;
 }
-
-.endClock {
-  border-radius:30px;
-  background-color: #4278BE;
-  margin: 2px;
-  height: 30px;
-  width: 60px;
-  font-size: 12px;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  text-align:center;
-  line-height: 2.3;
-}

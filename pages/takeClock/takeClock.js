@@ -18,33 +18,34 @@ Page({
     orderNo: '',
     orderName: '',
     imageList: [],
-    formData: {},
+    formData: {person:undefined},
+    clockDate: '',
+    clockStr: '',
+    endOrder: false,
+    clockImageList: [],
     type: 0,
-    rules: [{
-      name: 'address',
-      rules: {
-        required: true,
-        message: '请获取地址'
-      },
-    }, {
-      name: 'person',
-      rules: [{
-        required: true,
-        message: '请输入人数'
-      }]
-    }],
+    clockData: undefined
   },
   onLoad: function(options) {
     console.log(options)
     this.data.orderId = options.orderId
     this.data.teamId = options.teamId
-    this.setData({type: options.type})
-
+    // this.data.clockDate = options.clockDate
+    let {clockDate} = this.data
+    let {clockStr} = this.data
+    clockDate = new Date().Format("yyyyMMdd")
+    clockStr = new Date().Format("yyyy年MM月dd日")
+    this.setData({type: options.type, clockDate, clockStr})
+    console.log('clockDate:', clockDate)
+    wx.showLoading({
+      title: '加载中',
+    })
     let that = this
     Request.get('/admin/order/' + options.orderId)
     .then(res => {
       console.log('result:' + JSON.stringify(res.data))
       if (res.data.status == 200) {
+        that.setData({orderNo:res.data.data.orderNo, orderName: res.data.data.orderName})
         console.log('res.data.data.status',res.data.data.status)
         if(res.data.data.status === '03')
         {
@@ -58,8 +59,61 @@ Page({
               })
             }
           })
+        }else {
+          Request.get('/admin/clock/search?search.orderId_eq=' + options.orderId + '&search.type_eq=' + options.type + '&search.clockDate_eq=' + this.data.clockDate)
+          .then(res => {
+            console.log('result:' + JSON.stringify(res.data))
+            if (res.data.status == 200) {
+              if(res.data.data.total == 0)
+              {
+                wx.hideLoading()
+                return
+              }else {
+                let {formData} = that.data
+                that.data.clockData = res.data.data.rows[0]
+                formData = res.data.data.rows[0]
+                console.log('clock data:', formData)
+                that.setData({formData: formData})
+                Request.get('/admin/clockImage/search?page.pn=1&page.size=1000&search.clockId_eq='+formData.id+'&sort.crtTime=desc')
+                .then(res => {
+                  console.log('result:' + JSON.stringify(res.data))
+                  if (res.data.status == 200) {
+                    let {clockImageList} = that.data
+                    if(res.data.data.total > 0) {
+                      clockImageList = res.data.data.rows
+                      let p = new Array()
+                      clockImageList.forEach((item) => {
+                        p.push(new Promise((resolve, reject) => {
+                          Request.getBit('/admin/orderDetail/image?name=' + item.patch)
+                          .then(res=> {
+                            let url ='data:image/png;base64,'+wx.arrayBufferToBase64(res.data)
+                            item.url = url
+                            resolve()
+                          }).catch(err => {
+                            console.log('error',err)
+                            reject()
+                          })
+                        }))
+                      })
+                      Promise.all(p).then(() => {
+                        wx.hideLoading()
+                        that.setData({clockImageList})
+                      })
+                    }
+                  }else {
+                    wx.hideLoading()
+                  }
+                }).catch(err => {
+                  console.log('error',err)
+                  wx.hideLoading()
+                })
+              }
+            }else {
+              wx.hideLoading()
+            }
+          })
+          wx.hideLoading()
         }
-        that.setData({orderNo:res.data.data.orderNo, orderName: res.data.data.orderName})
       }
     }).catch(err => {
       console.log('error',err)
@@ -86,7 +140,8 @@ Page({
                 //获取当前地址成功
                 console.log(res);
                 that.setData({address: res.result.address})
-                that.data.formData.address = that.data.address
+                that.data.formData.address = res.result.address
+                that.setData({formData: formData})
                 console.log(that.data.address);
               },
               fail: function (res) {
@@ -101,7 +156,7 @@ Page({
     wx.chooseImage({
       count: 1, // 默认9
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         // _this.setData({
@@ -122,10 +177,36 @@ Page({
     } = e.currentTarget.dataset
     console.log('formInputChange:' + field)
     this.setData({
-      [`formData.${field}`]: e.detail.value
+      [`${field}`]: e.detail.value
     })
   },
-  takeClock() {
+  checkboxChange(e) {
+    console.log('checkbox发生change事件，携带value值为：', e.detail.value)
+    if(e.detail.value == 'endOrder') {
+      this.data.endOrder = true
+    }else {
+      this.data.endOrder = false
+    }
+  },
+  endClock(e) {
+    let type = e.currentTarget.dataset.index
+    let that = this
+    wx.showModal({
+      title: '提示',
+      content: '是否要完结这工单？',
+      success (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          that.takeClock(e)
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+  takeClock(e) {
+    let type = e.currentTarget.dataset.index
+    console.log('takeClock事件，携带value值为：', e.currentTarget.dataset.index)
     let {formData} = this.data
     if(formData.address == undefined || formData.address.length < 1) {
       this.setData({
@@ -139,51 +220,96 @@ Page({
       })
       return
     }
-    formData.picNum = this.data.photoNum
-    formData.type = this.data.type
+    formData.clockDate = this.data.clockDate
+    formData.type = type
     formData.orderId = this.data.orderId
     console.log('formData', formData)
     let _that = this
-    Request.post('/admin/clock/add', JSON.stringify(_that.data.formData))
-    .then(res => {
-      console.log('result:' + JSON.stringify(res.data))
-      if(res.data.status == 500)
-      {
-        wx.showToast({
-            title: res.data.message,
-            icon: 'none'
-          })
-      }else if(res.data.status == 200) {
-        let p = new Array()
-        let {imageList} = _that.data
-        imageList.forEach((item) => {
-          console.log('upload')
-          p.push(new Promise((resolve, reject) => {
-            Request.upload('/admin/clockImage/upload?orderId=' + this.data.orderId + '&clockId=' + res.data.data, 'file', item.toString())
-            .then(res=> {
-              console.log(res)
-              resolve()
-            }).catch(err => {
-              console.log('error',err)
-              reject()
-            })
-          }))
-        })
-        Promise.all(p).then(() => {
+    if(formData.id == undefined) {
+      Request.post('/admin/clock/add', JSON.stringify(_that.data.formData))
+      .then(res => {
+        console.log('result:' + JSON.stringify(res.data))
+        if(res.data.status == 500)
+        {
           wx.showToast({
-            title: '打卡成功',
-            icon: 'success',
-            duration: 2000,
-            mask: true,
-            success: () => {setTimeout(() => {
-              wx.navigateBack()
-            }, 2000)}
+              title: res.data.message,
+              icon: 'none'
+            })
+        }else if(res.data.status == 200) {
+          let p = new Array()
+          let {imageList} = _that.data
+          imageList.forEach((item) => {
+            console.log('upload')
+            p.push(new Promise((resolve, reject) => {
+              Request.upload('/admin/clockImage/upload?orderId=' + this.data.orderId + '&clockId=' + res.data.data, 'file', item.toString())
+              .then(res=> {
+                console.log(res)
+                resolve()
+              }).catch(err => {
+                console.log('error',err)
+                reject()
+              })
+            }))
           })
-        })
-      }
+          Promise.all(p).then(() => {
+            wx.showToast({
+              title: '打卡成功',
+              icon: 'success',
+              duration: 2000,
+              mask: true,
+              success: () => {setTimeout(() => {
+                wx.navigateBack()
+              }, 2000)}
+            })
+          })
+        }
 
-    }).catch(err => {
-      console.log('error:', err)
-    })
+      }).catch(err => {
+        console.log('error:', err)
+      })
+    } else {
+      Request.put('/admin/clock/'+formData.id, JSON.stringify(formData))
+      .then(res => {
+        console.log('result:' + JSON.stringify(res.data))
+        if(res.data.status == 500)
+        {
+          wx.showToast({
+              title: res.data.message,
+              icon: 'none'
+            })
+        }else if(res.data.status == 200) {
+          let p = new Array()
+          let {imageList} = _that.data
+          imageList.forEach((item) => {
+            console.log('upload')
+            p.push(new Promise((resolve, reject) => {
+              console.log('url:', '/admin/clockImage/upload?orderId=' + this.data.orderId + '&clockId=' + formData.id)
+              Request.upload('/admin/clockImage/upload?orderId=' + this.data.orderId + '&clockId=' + formData.id, 'file', item.toString())
+              .then(res=> {
+                console.log(res)
+                resolve()
+              }).catch(err => {
+                console.log('error',err)
+                reject()
+              })
+            }))
+          })
+          Promise.all(p).then(() => {
+            wx.showToast({
+              title: '打卡成功',
+              icon: 'success',
+              duration: 2000,
+              mask: true,
+              success: () => {setTimeout(() => {
+                wx.navigateBack()
+              }, 2000)}
+            })
+          })
+        }
+
+      }).catch(err => {
+        console.log('error:', err)
+      })
+    }
   }
 })

@@ -1,0 +1,19 @@
+<mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__bd">
+    <mp-cells title="{{clock.type == 1 ? '上班打卡':'下班打卡' + '信息'}}">
+      <mp-cell ext-class="mp-cell" prop="address" title="地址：">
+        <input type="text" disabled="true" value="{{clock.address}}" class="weui-input"/>
+      </mp-cell>
+      <mp-cell ext-class="mp-cell" prop="person" title="人数：">
+        <input type="number" maxlength="2" value="{{clock.person}}" class="weui-input" />
+      </mp-cell>
+      <mp-cell ext-class="mp-cell" prop="person" title="时间：">
+        <input type="number" value="{{clock.crtTime}}" class="weui-input" />
+      </mp-cell>
+      <div>
+        <image wx:key="id" wx:for="{{clockImageList}}" data-index='{{item.url}}' src="{{item.url}}" bindtap="viewImage" mode="aspecFill" class="image"/>
+      </div>
+    </mp-cells>
+  </view>
+</view>

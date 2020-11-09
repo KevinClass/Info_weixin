@@ -22,6 +22,9 @@ Page({
     console.log(options)
     this.setData({orderId: options.orderId, teamId: options.teamId})
     let that = this
+    wx.showLoading({
+      title: '加载中',
+    })
     Request.get('/admin/order/' + options.orderId)
     .then(res => {
       console.log('result:' + JSON.stringify(res.data))
@@ -65,6 +68,11 @@ Page({
             that.setData({details})
             console.log('end all imageUrl', details)
             console.log('end all imageUrl', this.data.details)
+            wx.hideLoading()
+          }).reject( () => {
+            wx.hideLoading()
+          }).catch( () => {
+            wx.hideLoading()
           })
         }
       }).catch(err => {
