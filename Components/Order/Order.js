@@ -99,7 +99,7 @@ Component({
       {
         console.log('teamIds, init', this.data.teamIds)
         this.data.loading = true
-        Request.get('/admin/order/search?page.pn=' + this.data.pagePn + '&page.size=' + this.data.pageSize + '&search.orderNo_prefixLike='+this.data.orderNo+'&search.teamId_in='+this.data.teamIds+'&sort.crtTime=desc')
+        Request.get('/admin/order/search?page.pn=' + this.data.pagePn + '&page.size=' + this.data.pageSize + '&search.orderNo_prefixLike='+this.data.orderNo+'&search.status_ne=03&search.teamId_in='+this.data.teamIds+'&sort.crtTime=desc')
         .then(res => {
           console.log('result:' + JSON.stringify(res.data))
           if (res.data.status == 200) {
