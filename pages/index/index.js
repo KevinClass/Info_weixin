@@ -64,6 +64,7 @@ Page({
           teamName: res.data.teamName,
           teamId: res.data.teamId
         }, ()=> {
+          console.log("")
           event.notice('order', res.data)
         });
       })
@@ -159,7 +160,7 @@ Page({
             console.log('result:' + JSON.stringify(res.data))
             if (res.data.status == 4000) {
               console.log('regedit')
-              wx.navigateTo({
+              wx.reLaunch({
                 url: '../regedit/regedit'
               })
             }else (res.data.status == 200) 

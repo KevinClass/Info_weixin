@@ -52,6 +52,7 @@ Page({
               p.push(new Promise((resolve, reject) => {
                 Request.getBit('/admin/orderDetail/image?name=' + item.path)
                 .then(res=> {
+                  console.log("start to base64");
                   let url ='data:image/png;base64,'+wx.arrayBufferToBase64(res.data)
                   item.url = url
                   item.type = this.data.detailType[item.type]
@@ -65,13 +66,12 @@ Page({
           })
           
           Promise.all(p).then(() => {
+            console.log('end all get', details)
             that.setData({details})
             console.log('end all imageUrl', details)
             console.log('end all imageUrl', this.data.details)
             wx.hideLoading()
-          }).reject( () => {
-            wx.hideLoading()
-          }).catch( () => {
+          }, ()=>{wx.hideLoading()}).catch( () => {
             wx.hideLoading()
           })
         }

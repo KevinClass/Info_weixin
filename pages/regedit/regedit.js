@@ -116,18 +116,17 @@ Page({
                       title: res.data.message,
                       icon: 'none'
                     })
-                    wx.navigateBack()
                 }else if(res.data.status == 200) {
                   wx.setStorageSync('token', res.data.data)
-                  wx.navigateBack().then(res=>{
+                  wx.reLaunch({
+                    url: '../../pages/index/index',
+                  }).then(res=>{
                     console.log('regedit notice start')
                     event.notice('user', res.data)
                     console.log('regedit notice end')
                   })
                 }
 
-              }).catch(err => {
-                console.log('error:' + JSON.stringify(err.data))
               })
           }
         })

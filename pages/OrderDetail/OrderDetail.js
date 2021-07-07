@@ -1,4 +1,6 @@
 // pages/OrderDetail/OrderDetail.js
+
+import Request from "../../utils/request" //导入模块
 Page({
 
   /**
@@ -65,5 +67,38 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  onViewClick: function() {
+    let that = this
+    console.log("onViewClick")
+    Request.get('/admin/order/' + this.data.orderId)
+    .then(res => {
+      console.log('result:' + JSON.stringify(res.data))
+      if (res.data.status == 200) {
+        if(res.data.data.teamId != undefined)
+        {
+          console.log('no teamId '+res.data.data.teamId)
+          wx.showModal({
+            title: '提示',
+            content: '订单已分配，是否重新分配？',
+            success (res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+                wx.navigateTo({url: '../malloc/malloc?orderId=' + that.data.orderId});
+              } else if (res.cancel) {
+                return
+              }
+            }
+          })
+        }else{
+          wx.navigateTo({url: '../malloc/malloc?orderId=' + that.data.orderId});
+        }
+        console.log('order:' + this.data.orderId)
+      }
+      this.data.loading = false
+    }).catch(err => {
+      console.log('error',err)
+      this.data.loading = false
+    })
   }
 })

@@ -47,8 +47,18 @@
                         <image src="../../images/record.png" mode="scaleToFill" />
                     </view>
                     <text class="weui-grid__label">打卡记录</text>
-                </view>
+                </view> 
             </navigator>
+        </view>
+        <view class="weui-grid" wx:if="{{teamId == 1}}" bindtap="onViewClick" >
+            <!-- <navigator url="{{'../malloc/malloc?orderId=' + orderId + '&teamId=' + teamId + '&type=1&status=' + status}}"> -->
+                <view class='weui-grid__bg'>
+                    <view class="weui-grid__icon">
+                        <image src="../../images/分配任务.png" mode="scaleToFill" />
+                    </view>
+                    <text class="weui-grid__label">分配装修队</text>
+                </view>
+            <!-- </navigator> -->
         </view>
     </view>
 </view>

@@ -1,22 +1,22 @@
-<!--Components/Order/Order.wxml-->
-<view hidden="{{hidden}}" class="vieworder">
+<!--pages/malloc/malloc.wxml-->
+<view class="vieworder">
   <view class="search">
     <view class="v-input">
-      <input class="wx-input" auto-focus bindchange="onInputChange" placeholder="搜索我的订单号"/>
+      <input class="wx-input" auto-focus bindchange="onInputChange" placeholder="搜索装修队名称"/>
     </view>
     <button class="input-btn" size="mini" bindtap="onRefresh">
       <image class='btnImg' src='../../images/search.png'></image>
     </button>
   </view>
-  <view class="order-page" >
+  <view class="team-page" >
     <scroll-view scroll-y="true" enable-back-to-top="true" refresher-enabled="true" class="scroll-view"
       bindrefresherrefresh="onRefresh"
       refresher-triggered="{{triggered}}"
       bindscrolltolower="onTolower">
       <view>
-        <view wx:key="id" wx:for="{{orderList}}" data-index='{{item}}' bindtap="onOrderKey" class="order-item">
-          <view>订单号：{{item.orderNo}}</view>
-          <view>订单装修队：{{item.orderName}}</view>
+        <view wx:key="id" wx:for="{{teamList}}" data-index='{{item}}' bindtap="onTeamKey" class="team-item">
+          <view>装修队名称：{{item.teamName}}</view>
+          <view>装修队密码：{{item.teamPass}}</view>
         </view>
       </view>
     </scroll-view>
